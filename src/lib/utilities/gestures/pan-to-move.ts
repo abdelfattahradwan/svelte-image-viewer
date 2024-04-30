@@ -1,6 +1,6 @@
 export default function panToMove(
   element: HTMLElement,
-  callback: (deltaX: number, deltaY: number) => void
+  callback: (deltaX: number, deltaY: number) => void,
 ) {
   const events = new Map<number, PointerEvent>();
 
@@ -16,7 +16,7 @@ export default function panToMove(
         x: acc.x + clientX,
         y: acc.y + clientY,
       }),
-      { x: 0, y: 0 }
+      { x: 0, y: 0 },
     );
 
     return {

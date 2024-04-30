@@ -1,6 +1,6 @@
 export default function pinchToZoom(
   element: HTMLElement,
-  callback: (scale: number) => void
+  callback: (scale: number) => void,
 ) {
   const events = new Map<number, PointerEvent>();
 
@@ -21,7 +21,7 @@ export default function pinchToZoom(
 
       const distance = Math.hypot(
         second.clientX - first.clientX,
-        second.clientY - first.clientY
+        second.clientY - first.clientY,
       );
 
       if (previousDistance !== null) {
@@ -46,7 +46,7 @@ export default function pinchToZoom(
 
       previousDistance = Math.hypot(
         second.clientX - first.clientX,
-        second.clientY - first.clientY
+        second.clientY - first.clientY,
       );
     }
   };
