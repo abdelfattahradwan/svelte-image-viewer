@@ -1,1 +1,3 @@
-// Reexport your entry components here
+import ImageViewer from "./components/ImageViewer.svelte";
+
+export default ImageViewer;
