@@ -5,6 +5,23 @@
     "type": "git",
     "url": "https://github.com/abdelfattahradwan/svelte-image-viewer.git"
   },
+  "keywords": [
+    "svelte",
+    "sveltekit",
+    "image-viewer",
+    "image-gallery",
+    "photo-viewer",
+    "svelte-component",
+    "ui-component",
+    "javascript",
+    "typescript",
+    "frontend",
+    "web-development",
+    "gallery",
+    "lightbox",
+    "media-viewer",
+    "responsive-gallery"
+  ],
   "scripts": {
     "dev": "vite dev",
     "build": "vite build && npm run package",
