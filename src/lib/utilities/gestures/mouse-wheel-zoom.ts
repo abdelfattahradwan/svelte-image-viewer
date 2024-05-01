@@ -4,7 +4,10 @@ export default function mouseWheelZoom(
   element: HTMLElement,
   callback: (delta: number) => void
 ): ActionReturn {
-  const handleWheel = (event: WheelEvent) => callback(event.deltaY);
+  const handleWheel = (event: WheelEvent) => {
+    event.preventDefault();
+    callback(event.deltaY);
+  };
 
   element.addEventListener("wheel", handleWheel);
 
