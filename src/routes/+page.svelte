@@ -19,7 +19,7 @@
   id="image-viewer-container"
   style="position: relative; height: 512px; user-select: none; border: 1px solid white;"
 >
-  <ImageViewer src="https://source.unsplash.com/random/768x512" />
+  <ImageViewer src="https://picsum.photos/256" />
 </div>
 
 <div
@@ -36,15 +36,6 @@
       easing: cubicOut,
     }}
   >
-    <img src="https://source.unsplash.com/random/768x512" alt="" />
-  </Viewer>
-</div>
-
-<div
-  id="viewer-2-container"
-  style="position: relative; height: 512px; user-select: none; border: 1px solid white;"
->
-  <Viewer>
-    <p>This is a paragraph inside the viewer</p>
+    <img src="https://picsum.photos/256" alt="" />
   </Viewer>
 </div>
