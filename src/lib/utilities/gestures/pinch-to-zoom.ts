@@ -27,7 +27,7 @@ export default function pinchToZoom(
       );
 
       if (previousDistance !== null) {
-        callback(distance - previousDistance);
+        callback(previousDistance - distance);
       }
 
       previousDistance = distance;
