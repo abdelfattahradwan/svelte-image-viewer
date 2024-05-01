@@ -1,6 +1,10 @@
 {
   "name": "svelte-image-viewer",
-  "version": "0.0.1",
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/abdelfattahradwan/svelte-image-viewer.git"
+  },
   "scripts": {
     "dev": "vite dev",
     "build": "vite build && npm run package",
