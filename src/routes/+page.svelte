@@ -17,9 +17,5 @@
   id="image-viewer-container"
   style="position: relative; height: 512px; user-select: none;"
 >
-  <ImageViewer
-    src="https://source.unsplash.com/random/800x600"
-    minZoom={0.5}
-    maxZoom={2.0}
-  />
+  <ImageViewer src="https://source.unsplash.com/random/800x600" />
 </div>
