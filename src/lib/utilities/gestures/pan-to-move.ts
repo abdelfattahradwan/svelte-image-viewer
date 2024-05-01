@@ -1,7 +1,9 @@
+import type { ActionReturn } from "svelte/action";
+
 export default function panToMove(
   element: HTMLElement,
   callback: (deltaX: number, deltaY: number) => void,
-) {
+): ActionReturn {
   const events = new Map<number, PointerEvent>();
 
   const updatePosition = () => {

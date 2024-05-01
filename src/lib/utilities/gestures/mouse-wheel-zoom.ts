@@ -1,10 +1,10 @@
+import type { ActionReturn } from "svelte/action";
+
 export default function mouseWheelZoom(
   element: HTMLElement,
-  callback: (scale: number) => void,
-) {
-  const handleWheel = (event: WheelEvent) => {
-    callback(event.deltaY);
-  };
+  callback: (delta: number) => void
+): ActionReturn {
+  const handleWheel = (event: WheelEvent) => callback(event.deltaY);
 
   element.addEventListener("wheel", handleWheel);
 
