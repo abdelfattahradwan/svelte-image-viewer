@@ -21,9 +21,9 @@
     duration: 125,
   };
 
-  let targetOffsetX: number = 0;
-  let targetOffsetY: number = 0;
-  let targetZoom: number = 1.0;
+  export let targetOffsetX: number = 0;
+  export let targetOffsetY: number = 0;
+  export let targetZoom: number = 1.0;
 
   const offsetX: Tweened<number> = tweened(0.0, panningOptions);
   const offsetY: Tweened<number> = tweened(0.0, panningOptions);
