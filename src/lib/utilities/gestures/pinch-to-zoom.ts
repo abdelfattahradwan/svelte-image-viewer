@@ -10,6 +10,7 @@ export default function pinchToZoom(
 
   const handlePointerDown = (event: PointerEvent) => {
     events.set(event.pointerId, event);
+    
     if (events.size === 2) {
       initialiseDistance();
     }
