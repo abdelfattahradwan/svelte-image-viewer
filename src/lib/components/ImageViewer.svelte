@@ -5,34 +5,30 @@
   import { type TweenedOptions, type Tweened, tweened } from "svelte/motion";
 
   export let src: string;
+  export let minScale: number = 0.5;
+  export let maxScale: number = 2.0;
+  export let scaleSmoothing: number = 250;
 
-  export let panningOptions: TweenedOptions<number> = {
+  export let offsetTweenOptions: TweenedOptions<number> = {
     duration: 125,
   };
 
-  export let zoomingOptions: {
-    minZoom: number;
-    maxZoom: number;
-    smoothing: number;
-  } & TweenedOptions<number> = {
-    minZoom: 0.5,
-    maxZoom: 2.0,
-    smoothing: 256,
+  export let scaleTweenOptions: TweenedOptions<number> = {
     duration: 125,
   };
 
   export let targetOffsetX: number = 0;
   export let targetOffsetY: number = 0;
-  export let targetZoom: number = 1.0;
+  export let targetScale: number = 1.0;
 
-  const offsetX: Tweened<number> = tweened(0.0, panningOptions);
-  const offsetY: Tweened<number> = tweened(0.0, panningOptions);
-  const zoom: Tweened<number> = tweened(1.0, zoomingOptions);
+  const offsetX: Tweened<number> = tweened(0.0, offsetTweenOptions);
+  const offsetY: Tweened<number> = tweened(0.0, offsetTweenOptions);
+  const scale: Tweened<number> = tweened(1.0, scaleTweenOptions);
 
   $: {
     offsetX.set(targetOffsetX);
     offsetY.set(targetOffsetY);
-    zoom.set(targetZoom);
+    scale.set(targetScale);
   }
 
   function setTargetOffset(deltaX: number, deltaY: number) {
@@ -40,26 +36,23 @@
     targetOffsetY += deltaY;
   }
 
-  function setTargetZoom(delta: number) {
-    targetZoom = Math.max(
-      zoomingOptions.minZoom,
-      Math.min(
-        zoomingOptions.maxZoom,
-        targetZoom * (1.0 - delta / zoomingOptions.smoothing)
-      )
+  function setTargetScale(delta: number) {
+    targetScale = Math.max(
+      minScale,
+      Math.min(maxScale, targetScale * (1.0 - delta / scaleSmoothing))
     );
   }
 </script>
 
 <div
-  style="display: flex; align-items: center; justify-content: center; position: absolute; top: 0; left: 0; right: 0; bottom: 0; overflow: hidden;"
+  style="display: flex; position: absolute; align-items: center; justify-content: center; top: 0; left: 0; right: 0; bottom: 0; overflow: hidden; touch-action: none;"
   use:panToMove={setTargetOffset}
-  use:mouseWheelZoom={setTargetZoom}
-  use:pinchToZoom={setTargetZoom}
+  use:mouseWheelZoom={setTargetScale}
+  use:pinchToZoom={setTargetScale}
 >
   <img
     {src}
     alt=""
-    style="display: block; pointer-events: none; transform: translate({$offsetX}px, {$offsetY}px) scale({$zoom})"
+    style="transform: translate({$offsetX}px, {$offsetY}px) scale({$scale}); will-change: transform; pointer-events: none;"
   />
 </div>
