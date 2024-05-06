@@ -5,6 +5,7 @@
     "type": "git",
     "url": "https://github.com/abdelfattahradwan/svelte-image-viewer.git"
   },
+  "license": "MIT",
   "keywords": [
     "svelte",
     "sveltekit",
