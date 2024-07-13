@@ -39,7 +39,7 @@
   function setTargetScale(delta: number) {
     targetScale = Math.max(
       minScale,
-      Math.min(maxScale, targetScale * (1.0 - delta / scaleSmoothing))
+      Math.min(maxScale, targetScale * (1.0 - delta / scaleSmoothing)),
     );
   }
 </script>

@@ -1,4 +1,4 @@
-import ImageViewer from "$lib/components/ImageViewer.svelte";
 import Viewer from "$lib/components/Viewer.svelte";
+import ImageViewer from "$lib/components/ImageViewer.svelte";
 
-export { ImageViewer, Viewer };
+export { Viewer, ImageViewer };

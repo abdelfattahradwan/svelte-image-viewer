@@ -2,7 +2,7 @@ import type { ActionReturn } from "svelte/action";
 
 export default function pinchToZoom(
   element: HTMLElement,
-  callback: (delta: number) => void
+  callback: (delta: number) => void,
 ): ActionReturn {
   const events = new Map<number, PointerEvent>();
 
@@ -10,7 +10,7 @@ export default function pinchToZoom(
 
   const handlePointerDown = (event: PointerEvent) => {
     events.set(event.pointerId, event);
-    
+
     if (events.size === 2) {
       initialiseDistance();
     }
@@ -24,7 +24,7 @@ export default function pinchToZoom(
 
       const distance = Math.hypot(
         second.clientX - first.clientX,
-        second.clientY - first.clientY
+        second.clientY - first.clientY,
       );
 
       if (previousDistance !== null) {
@@ -49,7 +49,7 @@ export default function pinchToZoom(
 
       previousDistance = Math.hypot(
         second.clientX - first.clientX,
-        second.clientY - first.clientY
+        second.clientY - first.clientY,
       );
     }
   };

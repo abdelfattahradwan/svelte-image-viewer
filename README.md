@@ -30,7 +30,7 @@ The `ImageViewer` component is a simple image viewer that displays an image with
 
 ```svelte
 <script>
-  import { ImageViewer } from 'svelte-image-viewer';
+  import { ImageViewer } from "svelte-image-viewer";
 </script>
 
 <div
@@ -46,7 +46,7 @@ The `Viewer` component displays its children inside a container with pan and zoo
 
 ```svelte
 <script>
-  import { Viewer } from 'svelte-image-viewer';
+  import { Viewer } from "svelte-image-viewer";
 </script>
 
 <div
