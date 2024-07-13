@@ -64,6 +64,8 @@
   "types": "./dist/index.d.ts",
   "type": "module",
   "trustedDependencies": [
+    "@sveltejs/kit",
+    "esbuild",
     "svelte-preprocess"
   ]
 }
