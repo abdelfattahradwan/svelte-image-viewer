@@ -9,7 +9,7 @@ export default function mouseWheelZoom(
     callback(event.deltaY);
   };
 
-  element.addEventListener("wheel", handleWheel);
+  element.addEventListener("wheel", handleWheel, { passive: false });
 
   return {
     destroy() {
