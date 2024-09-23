@@ -1,5 +1,8 @@
 import type { ActionReturn } from "svelte/action";
 
+/**
+ * @deprecated use `panAndZoom` instead
+ */
 export default function panToMove(
   element: HTMLElement,
   callback: (deltaX: number, deltaY: number) => void,
