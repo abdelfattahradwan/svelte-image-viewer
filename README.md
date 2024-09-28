@@ -10,6 +10,10 @@ A couple of simple components for displaying content with pan and zoom capabilit
 
 ## Demo
 
+### Live
+
+https://svelte-image-viewer.vercel.app/
+
 ### Desktop
 
 https://github.com/user-attachments/assets/8f41776c-b718-4fd2-8afe-942e54db5d62
