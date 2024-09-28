@@ -50,9 +50,9 @@ The `ImageViewer` component is a simple image viewer that displays an image with
 </script>
 
 <div
-  style="position: relative; height: 512px; user-select: none;border: 1px solid white;"
+  style="position: relative; height: 512px; user-select: none; border: 1px solid white;"
 >
-  <ImageViewer src="https://source.unsplash.com/random/768x512" />
+  <ImageViewer src="https://picsum.photos/256" />
 </div>
 ```
 
@@ -69,7 +69,7 @@ The `Viewer` component displays its children inside a container with pan and zoo
   style="position: relative; height: 512px; user-select: none; border: 1px solid white;"
 >
   <Viewer>
-    <p>This is a paragraph inside the viewer</p>
+    <img src="https://picsum.photos/256" alt="" />
   </Viewer>
 </div>
 ```
