@@ -2,6 +2,16 @@
 
 A couple of simple components for displaying content with pan and zoom capabilities.
 
+## Features
+
+- Pan and zoom capabilities
+- Works with any HTML element
+- Supports mouse and touchscreen interactions
+
+## Demo
+
+TBA
+
 ## Installation
 
 ### npm
