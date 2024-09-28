@@ -10,7 +10,13 @@ A couple of simple components for displaying content with pan and zoom capabilit
 
 ## Demo
 
-TBA
+### Desktop
+
+https://github.com/user-attachments/assets/8f41776c-b718-4fd2-8afe-942e54db5d62
+
+### Mobile
+
+https://github.com/user-attachments/assets/43e45ee0-a282-4204-a08b-088e40edcd96
 
 ## Installation
 
