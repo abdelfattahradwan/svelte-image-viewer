@@ -2,9 +2,9 @@ import type { ActionReturn } from "svelte/action";
 import { type Writable, get } from "svelte/store";
 
 interface PanAndZoomParams {
-  offsetX: Writable<number>;
-  offsetY: Writable<number>;
-  scale: Writable<number>;
+  offsetX: { get: () => number; set: (value: number) => number };
+  offsetY: { get: () => number; set: (value: number) => number };
+  scale: { get: () => number; set: (value: number) => number };
   minScale?: number;
   maxScale?: number;
   scaleSmoothing?: number;
@@ -24,10 +24,10 @@ export default function panAndZoom(
   const pointers = new Map<number, PointerEvent>();
 
   let initialDistance = 0;
-  let initialScale = get(scale);
+  let initialScale = scale.get();
 
-  let currentOffsetX = get(offsetX);
-  let currentOffsetY = get(offsetY);
+  let currentOffsetX = offsetX.get();
+  let currentOffsetY = offsetY.get();
 
   let initialMidpointX = 0;
   let initialMidpointY = 0;
@@ -41,8 +41,8 @@ export default function panAndZoom(
     element.setPointerCapture(event.pointerId);
 
     if (pointers.size === 1) {
-      currentOffsetX = get(offsetX);
-      currentOffsetY = get(offsetY);
+      currentOffsetX = offsetX.get();
+      currentOffsetY = offsetY.get();
 
       initialMidpointX = event.clientX;
       initialMidpointY = event.clientY;
@@ -56,10 +56,10 @@ export default function panAndZoom(
         p2.clientY,
       );
 
-      initialScale = get(scale);
+      initialScale = scale.get();
 
-      currentOffsetX = get(offsetX);
-      currentOffsetY = get(offsetY);
+      currentOffsetX = offsetX.get();
+      currentOffsetY = offsetY.get();
 
       [initialMidpointX, initialMidpointY] = midpoint(
         p1.clientX,
@@ -150,8 +150,8 @@ export default function panAndZoom(
         return;
       }
 
-      currentOffsetX = get(offsetX);
-      currentOffsetY = get(offsetY);
+      currentOffsetX = offsetX.get();
+      currentOffsetY = offsetY.get();
 
       initialMidpointX = pointer.clientX;
       initialMidpointY = pointer.clientY;
@@ -163,7 +163,7 @@ export default function panAndZoom(
 
     const delta = -event.deltaY;
     const scaleChange = 1 + delta / scaleSmoothing;
-    const currentScale = get(scale);
+    const currentScale = scale.get();
     const newScale = clamp(currentScale * scaleChange, minScale, maxScale);
     const adjustedScale = newScale / currentScale;
 
@@ -172,8 +172,8 @@ export default function panAndZoom(
     const newOffsetX = event.clientX - rect.left - rect.width * 0.5;
     const newOffsetY = event.clientY - rect.top - rect.height * 0.5;
 
-    const newX = newOffsetX - adjustedScale * (newOffsetX - get(offsetX));
-    const newY = newOffsetY - adjustedScale * (newOffsetY - get(offsetY));
+    const newX = newOffsetX - adjustedScale * (newOffsetX - offsetX.get());
+    const newY = newOffsetY - adjustedScale * (newOffsetY - offsetY.get());
 
     offsetX.set(newX);
     offsetY.set(newY);
