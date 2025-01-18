@@ -37,28 +37,28 @@
   const scale = new Tween(1, tweenOptions);
 
   $effect(() => {
-    offsetX.set(targetOffsetX);
-    offsetY.set(targetOffsetY);
+    offsetX.target = targetOffsetX;
+    offsetY.target = targetOffsetY;
   });
 
   $effect(() => {
-    scale.set(targetScale);
+    scale.target = targetScale;
   });
 </script>
 
 <div
   use:panAndZoom={{
     offsetX: {
-      get: () => offsetX.target,
-      set: (value) => (offsetX.target = value),
+      get: () => targetOffsetX,
+      set: (value) => (targetOffsetX = value),
     },
     offsetY: {
-      get: () => offsetY.target,
-      set: (value) => (offsetY.target = value),
+      get: () => targetOffsetY,
+      set: (value) => (targetOffsetY = value),
     },
     scale: {
-      get: () => scale.target,
-      set: (value) => (scale.target = value),
+      get: () => targetScale,
+      set: (value) => (targetScale = value),
     },
     minScale,
     maxScale,
