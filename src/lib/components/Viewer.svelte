@@ -2,6 +2,7 @@
   import panAndZoom from "$lib/actions/pan-and-zoom.js";
   import { Tween } from "svelte/motion";
   import { cubicOut } from "svelte/easing";
+  import type { Snippet } from "svelte";
 
   interface Props {
     targetOffsetX?: number;
@@ -15,7 +16,7 @@
     ) => unknown
       ? Args[1]
       : never;
-    children?: import("svelte").Snippet;
+    children?: Snippet;
   }
 
   let {
