@@ -1,5 +1,4 @@
 import type { ActionReturn } from "svelte/action";
-import { type Writable, get } from "svelte/store";
 
 interface PanAndZoomParams {
   offsetX: { get: () => number; set: (value: number) => number };
