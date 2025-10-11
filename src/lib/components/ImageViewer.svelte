@@ -2,17 +2,6 @@
   import { createPanAndZoom } from "$lib/attachments/create-pan-and-zoom.svelte.js";
   import { moveTowards } from "$lib/attachments/move-towards.svelte.js";
 
-  interface Props {
-    src: string;
-    alt?: string;
-    targetOffsetX?: number;
-    targetOffsetY?: number;
-    targetScale?: number;
-    minScale?: number;
-    maxScale?: number;
-    smoothing?: number;
-  }
-
   let {
     src,
     alt,
@@ -22,7 +11,16 @@
     minScale = $bindable(0.5),
     maxScale = $bindable(3.0),
     smoothing = 0.25,
-  }: Props = $props();
+  }: {
+    src: string;
+    alt?: string;
+    targetOffsetX?: number;
+    targetOffsetY?: number;
+    targetScale?: number;
+    minScale?: number;
+    maxScale?: number;
+    smoothing?: number;
+  } = $props();
 
   const animatedOffsetX = moveTowards(0, smoothing);
   const animatedOffsetY = moveTowards(0, smoothing);
