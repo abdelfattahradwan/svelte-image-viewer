@@ -1,23 +1,7 @@
 <script lang="ts">
-  import { Tween } from "svelte/motion";
-  import { cubicOut } from "svelte/easing";
   import type { Snippet } from "svelte";
   import { createPanAndZoom } from "$lib/attachments/create-pan-and-zoom.svelte.js";
-
-  interface Props {
-    targetOffsetX?: number;
-    targetOffsetY?: number;
-    targetScale?: number;
-    minScale?: number;
-    maxScale?: number;
-    scaleSmoothing?: number;
-    tweenOptions?: typeof Tween<number> extends new (
-      ...args: infer Args
-    ) => unknown
-      ? Args[1]
-      : never;
-    children?: Snippet;
-  }
+  import { moveTowards } from "$lib/attachments/move-towards.svelte.js";
 
   let {
     targetOffsetX = $bindable(0),
@@ -25,25 +9,32 @@
     targetScale = $bindable(1.0),
     minScale = $bindable(0.5),
     maxScale = $bindable(3.0),
-    scaleSmoothing = $bindable(500),
-    tweenOptions = {
-      duration: 300,
-      easing: cubicOut,
-    },
+    smoothing = $bindable(500),
     children,
-  }: Props = $props();
+  }: {
+    targetOffsetX?: number;
+    targetOffsetY?: number;
+    targetScale?: number;
+    minScale?: number;
+    maxScale?: number;
+    smoothing?: number;
+    children?: Snippet;
+  } = $props();
 
-  const offsetX = new Tween(0, tweenOptions);
-  const offsetY = new Tween(0, tweenOptions);
-  const scale = new Tween(1, tweenOptions);
+  const animatedOffsetX = moveTowards(0, smoothing);
+  const animatedOffsetY = moveTowards(0, smoothing);
+  const animatedScale = moveTowards(1.0, smoothing);
+
+  $effect(() => void (animatedOffsetX.target = targetOffsetX));
+  $effect(() => void (animatedOffsetY.target = targetOffsetY));
+  $effect(() => void (animatedScale.target = targetScale));
 
   $effect(() => {
-    offsetX.target = targetOffsetX;
-    offsetY.target = targetOffsetY;
-  });
-
-  $effect(() => {
-    scale.target = targetScale;
+    return () => {
+      animatedOffsetX.destroy();
+      animatedOffsetY.destroy();
+      animatedScale.destroy();
+    };
   });
 </script>
 
@@ -69,12 +60,12 @@
     },
     minScale,
     maxScale,
-    scaleSmoothing,
+    scaleSmoothing: smoothing,
   })}
   style="display: flex; position: absolute; align-items: center; justify-content: center; top: 0; left: 0; right: 0; bottom: 0; overflow: hidden; touch-action: none;"
 >
   <div
-    style="transform: translate({offsetX.current}px, {offsetY.current}px) scale({scale.current}); will-change: transform; pointer-events: none;"
+    style="transform: translate({animatedOffsetX.current}px, {animatedOffsetY.current}px) scale({animatedScale.current}); will-change: transform; pointer-events: none;"
   >
     {@render children?.()}
   </div>
