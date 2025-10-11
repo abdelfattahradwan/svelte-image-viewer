@@ -9,7 +9,7 @@
     targetScale = $bindable(1.0),
     minScale = $bindable(0.5),
     maxScale = $bindable(3.0),
-    smoothing = $bindable(500),
+    smoothing = $bindable(0.25),
     children,
   }: {
     targetOffsetX?: number;
