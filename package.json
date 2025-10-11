@@ -1,11 +1,6 @@
 {
   "name": "svelte-image-viewer",
   "version": "5.0.0",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/abdelfattahradwan/svelte-image-viewer.git"
-  },
-  "license": "MIT",
   "keywords": [
     "svelte",
     "sveltekit",
@@ -23,16 +18,12 @@
     "media-viewer",
     "responsive-gallery"
   ],
-  "scripts": {
-    "prepare": "svelte-kit sync",
-    "dev": "vite dev",
-    "build": "vite build && npm run package",
-    "preview": "vite preview",
-    "package": "svelte-kit sync && svelte-package && publint",
-    "prepublishOnly": "npm run package",
-    "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
-    "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abdelfattahradwan/svelte-image-viewer.git"
   },
+  "license": "MIT",
+  "type": "module",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -43,13 +34,22 @@
       "svelte": "./dist/legacy.js"
     }
   },
+  "svelte": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "files": [
     "dist",
     "!dist/**/*.test.*",
     "!dist/**/*.spec.*"
   ],
-  "peerDependencies": {
-    "svelte": "^5.0.0"
+  "scripts": {
+    "build": "vite build && npm run package",
+    "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+    "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+    "dev": "vite dev",
+    "package": "svelte-kit sync && svelte-package && publint",
+    "prepare": "svelte-kit sync",
+    "prepublishOnly": "npm run package",
+    "preview": "vite preview"
   },
   "devDependencies": {
     "@sveltejs/adapter-auto": "^6.1.1",
@@ -64,9 +64,9 @@
     "tslib": "^2.8.1",
     "vite": "^7.1.9"
   },
-  "svelte": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "type": "module",
+  "peerDependencies": {
+    "svelte": "^5.0.0"
+  },
   "trustedDependencies": [
     "@sveltejs/kit",
     "esbuild",
