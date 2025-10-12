@@ -1,5 +1,3 @@
-import { browser } from "$app/environment";
-
 /**
  * Smoothly animates a value towards a target using requestAnimationFrame.
  *
@@ -13,7 +11,7 @@ export function moveTowards(
   smoothing: number = 0.125,
   threshold: number = 0.00125,
 ) {
-  if (!browser) {
+  if (typeof window === "undefined") {
     return {
       get current() {
         return initialValue;
