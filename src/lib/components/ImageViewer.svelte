@@ -34,13 +34,9 @@
     return image;
   }
 
-  const animatedOffsetX = moveTowards(0, smoothing);
-  const animatedOffsetY = moveTowards(0, smoothing);
-  const animatedScale = moveTowards(1.0, smoothing);
-
-  $effect(() => void (animatedOffsetX.target = targetOffsetX));
-  $effect(() => void (animatedOffsetY.target = targetOffsetY));
-  $effect(() => void (animatedScale.target = targetScale));
+  const animatedOffsetX = moveTowards(() => targetOffsetX, smoothing);
+  const animatedOffsetY = moveTowards(() => targetOffsetY, smoothing);
+  const animatedScale = moveTowards(() => targetScale, smoothing);
 
   $effect(() => {
     return () => {
