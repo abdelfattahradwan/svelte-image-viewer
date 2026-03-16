@@ -33,12 +33,12 @@ export function scaleToFit(
     return getDefaultTargets();
   }
 
-  const normalizedCurrentScale = normalizeCurrentScale(currentScale);
+  const normalisedCurrentScale = normaliseCurrentScale(currentScale);
 
   return {
     targetOffsetX: 0,
     targetOffsetY: 0,
-    targetScale: getScale(elementRect, parentRect, normalizedCurrentScale),
+    targetScale: getScale(elementRect, parentRect, normalisedCurrentScale),
   };
 }
 
@@ -56,7 +56,7 @@ function getScale(
   return Number.isFinite(scale) && scale > 0 ? scale : 1;
 }
 
-function normalizeCurrentScale(currentScale: number): number {
+function normaliseCurrentScale(currentScale: number): number {
   return Number.isFinite(currentScale) && currentScale > 0 ? currentScale : 1;
 }
 
