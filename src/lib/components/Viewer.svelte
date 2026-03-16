@@ -2,6 +2,7 @@
   import type { Snippet } from "svelte";
   import { createPanAndZoom } from "$lib/attachments/create-pan-and-zoom.svelte.js";
   import { moveTowards } from "$lib/attachments/move-towards.svelte.js";
+  import { scaleToFit } from "$lib/utilities/scale-to-fit.js";
 
   let {
     targetOffsetX = $bindable(0),
@@ -31,6 +32,15 @@
 
   export function getContent() {
     return content;
+  }
+
+  export function scaleContentToFit() {
+    if (content) {
+      const result = scaleToFit(content, targetScale);
+      targetOffsetX = result.targetOffsetX;
+      targetOffsetY = result.targetOffsetY;
+      targetScale = result.targetScale;
+    }
   }
 
   const animatedOffsetX = moveTowards(() => targetOffsetX, smoothing);
