@@ -34,9 +34,13 @@
     },
   }: Props = $props();
 
-  const offsetX = new Tween(0.0, tweenOptions);
-  const offsetY = new Tween(0.0, tweenOptions);
-  const scale = new Tween(1.0, tweenOptions);
+  function getTweenOptions() {
+    return tweenOptions;
+  }
+
+  const offsetX = new Tween(0.0, getTweenOptions());
+  const offsetY = new Tween(0.0, getTweenOptions());
+  const scale = new Tween(1.0, getTweenOptions());
 
   $effect(() => {
     offsetX.target = targetOffsetX;
