@@ -2,7 +2,6 @@
   import "../app.css";
   import ImageViewer from "$lib/components/ImageViewer.svelte";
   import Viewer from "$lib/components/Viewer.svelte";
-  import { scaleToFit } from "$lib/utilities/scale-to-fit.js";
 
   let imageViewer = $state<ImageViewer>();
 
@@ -17,37 +16,11 @@
   let viewerScaleTarget = $state(1.0);
 
   function fitImageViewer() {
-    const imageViewerImage = imageViewer?.getImage();
-
-    if (imageViewerImage === undefined) {
-      return;
-    }
-
-    const { targetOffsetX, targetOffsetY, targetScale } = scaleToFit(
-      imageViewerImage,
-      imageViewerScaleTarget,
-    );
-
-    imageViewerOffsetXTarget = targetOffsetX;
-    imageViewerOffsetYTarget = targetOffsetY;
-    imageViewerScaleTarget = targetScale;
+    imageViewer?.scaleImageToFit();
   }
 
   function fitViewer() {
-    const viewerContent = viewer?.getContent();
-
-    if (viewerContent === undefined) {
-      return;
-    }
-
-    const { targetOffsetX, targetOffsetY, targetScale } = scaleToFit(
-      viewerContent,
-      viewerScaleTarget,
-    );
-
-    viewerOffsetXTarget = targetOffsetX;
-    viewerOffsetYTarget = targetOffsetY;
-    viewerScaleTarget = targetScale;
+    viewer?.scaleContentToFit();
   }
 
   function resetImageViewer() {
