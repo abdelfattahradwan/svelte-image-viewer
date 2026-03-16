@@ -87,9 +87,9 @@
     <div
       style="display: flex; flex-direction: column; gap: 1rem; position: absolute; top: 1rem; inset-inline-start: 1rem;"
     >
-      <div>Target X = {imageViewerOffsetXTarget}</div>
-      <div>Target Y = {imageViewerOffsetYTarget}</div>
-      <div>Target Scale = {imageViewerScaleTarget}</div>
+      <div>Target X = {imageViewerOffsetXTarget.toFixed(2)}</div>
+      <div>Target Y = {imageViewerOffsetYTarget.toFixed(2)}</div>
+      <div>Target Scale = {imageViewerScaleTarget.toFixed(2)}</div>
       <button
         type="button"
         onclick={fitImageViewer}
@@ -121,9 +121,9 @@
     <div
       style="display: flex; flex-direction: column; gap: 1rem; position: absolute; top: 1rem; inset-inline-start: 1rem;"
     >
-      <div>Target X = {viewerOffsetXTarget}</div>
-      <div>Target Y = {viewerOffsetYTarget}</div>
-      <div>Target Scale = {viewerScaleTarget}</div>
+      <div>Target X = {viewerOffsetXTarget.toFixed(2)}</div>
+      <div>Target Y = {viewerOffsetYTarget.toFixed(2)}</div>
+      <div>Target Scale = {viewerScaleTarget.toFixed(2)}</div>
       <button type="button" onclick={fitViewer} style="padding: 0.5rem 1rem;">
         Fit
       </button>
