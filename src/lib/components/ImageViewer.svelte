@@ -1,6 +1,7 @@
 <script lang="ts">
   import { createPanAndZoom } from "$lib/attachments/create-pan-and-zoom.svelte.js";
   import { moveTowards } from "$lib/attachments/move-towards.svelte.js";
+  import { scaleToFit } from "$lib/utilities/scale-to-fit.js";
 
   let {
     src,
@@ -32,6 +33,15 @@
 
   export function getImage() {
     return image;
+  }
+
+  export function scaleImageToFit() {
+    if (image) {
+      const result = scaleToFit(image, targetScale);
+      targetOffsetX = result.targetOffsetX;
+      targetOffsetY = result.targetOffsetY;
+      targetScale = result.targetScale;
+    }
   }
 
   const animatedOffsetX = moveTowards(() => targetOffsetX, smoothing);
