@@ -21,6 +21,18 @@
     children?: Snippet;
   } = $props();
 
+  let container = $state<HTMLDivElement>();
+
+  let content = $state<HTMLDivElement>();
+
+  export function getContainer() {
+    return container;
+  }
+
+  export function getContent() {
+    return content;
+  }
+
   const animatedOffsetX = moveTowards(0, smoothing);
   const animatedOffsetY = moveTowards(0, smoothing);
   const animatedScale = moveTowards(1.0, smoothing);
@@ -39,6 +51,7 @@
 </script>
 
 <div
+  bind:this={container}
   {@attach createPanAndZoom({
     get offsetX() {
       return targetOffsetX;
@@ -64,6 +77,7 @@
   style="display: flex; position: absolute; align-items: center; justify-content: center; top: 0; left: 0; right: 0; bottom: 0; overflow: hidden; touch-action: none;"
 >
   <div
+    bind:this={content}
     style="transform: translate({animatedOffsetX.current}px, {animatedOffsetY.current}px) scale({animatedScale.current}); will-change: transform; pointer-events: none;"
   >
     {@render children?.()}
