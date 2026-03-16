@@ -7,17 +7,20 @@
  * @returns Object with current value state and update function
  */
 export function moveTowards(
-  initialValue: number = 0,
+  initialValue: number | (() => number) = 0,
   smoothing: number = 0.125,
   threshold: number = 0.00125,
 ) {
+  const getInitialValue =
+    typeof initialValue === "function" ? initialValue : () => initialValue;
+
   if (typeof window === "undefined") {
     return {
       get current() {
-        return initialValue;
+        return getInitialValue();
       },
       get target() {
-        return initialValue;
+        return getInitialValue();
       },
       set target(value: number) {
         void value;
@@ -28,8 +31,12 @@ export function moveTowards(
     };
   }
 
-  let currentValue = $state(initialValue);
-  let targetValue = $state(initialValue);
+  let currentValue = $state(getInitialValue());
+
+  let targetValue = $derived(getInitialValue());
+
+  $effect(() => (void targetValue, startAnimation()));
+
   let animationId: number | null = null;
   let lastTime = window.performance.now();
 
@@ -79,7 +86,7 @@ export function moveTowards(
       return targetValue;
     },
     set target(value: number) {
-      void ((targetValue = value), startAnimation());
+      targetValue = value;
     },
     destroy: stopAnimation,
   };
