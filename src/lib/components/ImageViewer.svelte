@@ -10,7 +10,7 @@
     targetScale = $bindable(1.0),
     minScale = $bindable(0.5),
     maxScale = $bindable(3.0),
-    smoothing = 0.25,
+    smoothing = $bindable(0.25),
   }: {
     src: string;
     alt?: string;
@@ -34,13 +34,9 @@
     return image;
   }
 
-  function getSmoothing() {
-    return smoothing;
-  }
-
-  const animatedOffsetX = moveTowards(0, getSmoothing());
-  const animatedOffsetY = moveTowards(0, getSmoothing());
-  const animatedScale = moveTowards(1.0, getSmoothing());
+  const animatedOffsetX = moveTowards(0, smoothing);
+  const animatedOffsetY = moveTowards(0, smoothing);
+  const animatedScale = moveTowards(1.0, smoothing);
 
   $effect(() => void (animatedOffsetX.target = targetOffsetX));
   $effect(() => void (animatedOffsetY.target = targetOffsetY));
