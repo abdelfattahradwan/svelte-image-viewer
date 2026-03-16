@@ -22,6 +22,18 @@
     smoothing?: number;
   } = $props();
 
+  let container = $state<HTMLDivElement>();
+
+  let image = $state<HTMLImageElement>();
+
+  export function getContainer() {
+    return container;
+  }
+
+  export function getImage() {
+    return image;
+  }
+
   function getSmoothing() {
     return smoothing;
   }
@@ -44,6 +56,7 @@
 </script>
 
 <div
+  bind:this={container}
   {@attach createPanAndZoom({
     get offsetX() {
       return targetOffsetX;
@@ -69,6 +82,7 @@
   style="display: flex; position: absolute; align-items: center; justify-content: center; top: 0; left: 0; right: 0; bottom: 0; overflow: hidden; touch-action: none;"
 >
   <img
+    bind:this={image}
     {src}
     {alt}
     style="transform: translate({animatedOffsetX.current}px, {animatedOffsetY.current}px) scale({animatedScale.current}); will-change: transform; pointer-events: none;"
