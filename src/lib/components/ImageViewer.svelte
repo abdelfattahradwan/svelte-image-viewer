@@ -22,9 +22,13 @@
     smoothing?: number;
   } = $props();
 
-  const animatedOffsetX = moveTowards(0, smoothing);
-  const animatedOffsetY = moveTowards(0, smoothing);
-  const animatedScale = moveTowards(1.0, smoothing);
+  function getSmoothing() {
+    return smoothing;
+  }
+
+  const animatedOffsetX = moveTowards(0, getSmoothing());
+  const animatedOffsetY = moveTowards(0, getSmoothing());
+  const animatedScale = moveTowards(1.0, getSmoothing());
 
   $effect(() => void (animatedOffsetX.target = targetOffsetX));
   $effect(() => void (animatedOffsetY.target = targetOffsetY));
