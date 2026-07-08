@@ -8,12 +8,14 @@
   let imageViewerOffsetXTarget = $state(0);
   let imageViewerOffsetYTarget = $state(0);
   let imageViewerScaleTarget = $state(1.0);
+  let imageViewerConfine = $state(false);
 
   let viewer = $state<Viewer>();
 
   let viewerOffsetXTarget = $state(0);
   let viewerOffsetYTarget = $state(0);
   let viewerScaleTarget = $state(1.0);
+  let viewerConfine = $state(false);
 
   function fitImageViewer() {
     imageViewer?.scaleImageToFit();
@@ -27,12 +29,14 @@
     imageViewerOffsetXTarget = 0;
     imageViewerOffsetYTarget = 0;
     imageViewerScaleTarget = 1;
+    imageViewerConfine = false;
   }
 
   function resetViewer() {
     viewerOffsetXTarget = 0;
     viewerOffsetYTarget = 0;
     viewerScaleTarget = 1;
+    viewerConfine = false;
   }
 </script>
 
@@ -56,6 +60,7 @@
       bind:targetOffsetX={imageViewerOffsetXTarget}
       bind:targetOffsetY={imageViewerOffsetYTarget}
       bind:targetScale={imageViewerScaleTarget}
+      confine={imageViewerConfine}
     />
     <div
       style="display: flex; flex-direction: column; gap: 1rem; position: absolute; top: 1rem; inset-inline-start: 1rem;"
@@ -69,6 +74,13 @@
         style="padding: 0.5rem 1rem;"
       >
         Fit
+      </button>
+      <button
+        type="button"
+        onclick={() => (imageViewerConfine = !imageViewerConfine)}
+        style="padding: 0.5rem 1rem;"
+      >
+        {imageViewerConfine ? "Disable Confinement" : "Enable Confinement"}
       </button>
       <button
         type="button"
@@ -88,6 +100,7 @@
       bind:targetOffsetX={viewerOffsetXTarget}
       bind:targetOffsetY={viewerOffsetYTarget}
       bind:targetScale={viewerScaleTarget}
+      confine={viewerConfine}
     >
       <img src="https://picsum.photos/256" alt="" />
     </Viewer>
@@ -99,6 +112,13 @@
       <div>Target Scale = {viewerScaleTarget.toFixed(2)}</div>
       <button type="button" onclick={fitViewer} style="padding: 0.5rem 1rem;">
         Fit
+      </button>
+      <button
+        type="button"
+        onclick={() => (viewerConfine = !viewerConfine)}
+        style="padding: 0.5rem 1rem;"
+      >
+        {viewerConfine ? "Disable Confinement" : "Enable Confinement"}
       </button>
       <button type="button" onclick={resetViewer} style="padding: 0.5rem 1rem;">
         Reset
