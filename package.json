@@ -50,7 +50,7 @@
     "prepare": "svelte-kit sync",
     "prepublishOnly": "npm run package",
     "preview": "vite preview",
-    "lint": "eslint ."
+    "lint": "eslint --no-cache --concurrency auto ."
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
