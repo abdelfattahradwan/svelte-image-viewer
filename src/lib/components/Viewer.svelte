@@ -11,6 +11,7 @@
     minScale = $bindable(0.5),
     maxScale = $bindable(3.0),
     smoothing = $bindable(0.25),
+    confine = $bindable(false),
     children,
   }: {
     targetOffsetX?: number;
@@ -19,6 +20,7 @@
     minScale?: number;
     maxScale?: number;
     smoothing?: number;
+    confine?: boolean;
     children?: Snippet;
   } = $props();
 
@@ -79,6 +81,7 @@
     },
     minScale,
     maxScale,
+    confine,
   })}
   style="display: flex; position: absolute; align-items: center; justify-content: center; top: 0; left: 0; right: 0; bottom: 0; overflow: hidden; touch-action: none;"
 >
