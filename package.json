@@ -46,11 +46,11 @@
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "dev": "vite dev",
+    "lint": "eslint --no-cache --concurrency auto .",
     "package": "svelte-kit sync && svelte-package && publint",
     "prepare": "svelte-kit sync",
     "prepublishOnly": "npm run package",
-    "preview": "vite preview",
-    "lint": "eslint --no-cache --concurrency auto ."
+    "preview": "vite preview"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
