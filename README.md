@@ -78,9 +78,9 @@ The `Viewer` component displays its children inside a container with pan and zoo
 </div>
 ```
 
-These components utilize Svelte's [Attachments](https://svelte.dev/docs/svelte/@attach), which were introduced in Svelte 5.29.
+These components utilise Svelte's [Attachments](https://svelte.dev/docs/svelte/@attach), which were introduced in Svelte 5.29.
 
-If you're using an older version of Svelte (prior to 5.29), import from svelte-image-viewer/legacy to access the legacy versions that rely on [Actions](https://svelte.dev/docs/svelte/use).
+If you're using an older version of Svelte (prior to 5.29), import from `svelte-image-viewer/legacy` to access the legacy versions that rely on [Actions](https://svelte.dev/docs/svelte/use).
 
 ## Support
 
