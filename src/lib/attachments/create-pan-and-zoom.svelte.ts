@@ -23,14 +23,11 @@ export function createPanAndZoom(
     let initialDistance = 0;
     let initialScale = 0;
 
-    let currentOffsetX = 0;
-    let currentOffsetY = 0;
-
-    let initialMidpointX = 0;
-    let initialMidpointY = 0;
-
     let centreX = 0;
     let centreY = 0;
+
+    let panSurfaceX = 0;
+    let panSurfaceY = 0;
 
     function getConfinement() {
       if (params.confine !== true) {
@@ -128,17 +125,31 @@ export function createPanAndZoom(
       untrack(confineCurrentOffsets);
     }
 
+    function setPanSurface(clientX: number, clientY: number) {
+      const scale = params.scale;
+
+      if (scale === 0) {
+        panSurfaceX = 0;
+        panSurfaceY = 0;
+        return;
+      }
+
+      const rect = element.getBoundingClientRect();
+
+      panSurfaceX =
+        (clientX - rect.left - rect.width * 0.5 - params.offsetX) / scale;
+
+      panSurfaceY =
+        (clientY - rect.top - rect.height * 0.5 - params.offsetY) / scale;
+    }
+
     function handlePointerDown(event: PointerEvent) {
       event.preventDefault();
       pointers.set(event.pointerId, event);
       element.setPointerCapture(event.pointerId);
 
       if (pointers.size === 1) {
-        currentOffsetX = params.offsetX;
-        currentOffsetY = params.offsetY;
-
-        initialMidpointX = event.clientX;
-        initialMidpointY = event.clientY;
+        setPanSurface(event.clientX, event.clientY);
       } else if (pointers.size === 2) {
         const [p1, p2] = Array.from(pointers.values());
 
@@ -151,10 +162,10 @@ export function createPanAndZoom(
 
         initialScale = params.scale;
 
-        currentOffsetX = params.offsetX;
-        currentOffsetY = params.offsetY;
+        const currentOffsetX = params.offsetX;
+        const currentOffsetY = params.offsetY;
 
-        [initialMidpointX, initialMidpointY] = midpoint(
+        const [initialMidpointX, initialMidpointY] = midpoint(
           p1.clientX,
           p1.clientY,
           p2.clientX,
@@ -189,21 +200,30 @@ export function createPanAndZoom(
           return;
         }
 
-        const dx = pointer.clientX - initialMidpointX;
-        const dy = pointer.clientY - initialMidpointY;
+        const currentScale = params.scale;
 
-        const newX = currentOffsetX + dx;
-        const newY = currentOffsetY + dy;
-        const [confinedX, confinedY] = confineOffsets(newX, newY, params.scale);
+        if (currentScale === 0) {
+          return;
+        }
+
+        const rect = element.getBoundingClientRect();
+
+        const newX =
+          pointer.clientX -
+          rect.left -
+          rect.width * 0.5 -
+          panSurfaceX * currentScale;
+
+        const newY =
+          pointer.clientY -
+          rect.top -
+          rect.height * 0.5 -
+          panSurfaceY * currentScale;
+
+        const [confinedX, confinedY] = confineOffsets(newX, newY, currentScale);
 
         params.offsetX = confinedX;
         params.offsetY = confinedY;
-
-        currentOffsetX = confinedX;
-        currentOffsetY = confinedY;
-
-        initialMidpointX = pointer.clientX;
-        initialMidpointY = pointer.clientY;
       } else if (pointers.size === 2) {
         const [p1, p2] = Array.from(pointers.values());
 
@@ -265,11 +285,7 @@ export function createPanAndZoom(
           return;
         }
 
-        currentOffsetX = params.offsetX;
-        currentOffsetY = params.offsetY;
-
-        initialMidpointX = pointer.clientX;
-        initialMidpointY = pointer.clientY;
+        setPanSurface(pointer.clientX, pointer.clientY);
       }
     }
 
@@ -327,8 +343,6 @@ export function createPanAndZoom(
     element.addEventListener("pointermove", handlePointerMove);
     element.addEventListener("pointerup", handlePointerUp);
     element.addEventListener("pointercancel", handlePointerUp);
-    element.addEventListener("pointerleave", handlePointerUp);
-    element.addEventListener("pointerout", handlePointerUp);
     element.addEventListener("wheel", handleWheel, { passive: false });
 
     return () => {
@@ -336,8 +350,6 @@ export function createPanAndZoom(
       element.removeEventListener("pointermove", handlePointerMove);
       element.removeEventListener("pointerup", handlePointerUp);
       element.removeEventListener("pointercancel", handlePointerUp);
-      element.removeEventListener("pointerleave", handlePointerUp);
-      element.removeEventListener("pointerout", handlePointerUp);
       element.removeEventListener("wheel", handleWheel);
       resizeObserver?.disconnect();
     };
