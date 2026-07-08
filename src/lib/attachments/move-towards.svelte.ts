@@ -35,7 +35,10 @@ export function moveTowards(
 
   let targetValue = $derived(getInitialValue());
 
-  $effect(() => (void targetValue, startAnimation()));
+  $effect(() => {
+    void targetValue;
+    startAnimation();
+  });
 
   let animationId: number | null = null;
   let lastTime = window.performance.now();
