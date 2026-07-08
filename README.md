@@ -105,6 +105,8 @@ The `Viewer` component displays its children inside a container with pan and zoo
 | `smoothing`     | `number`  | `0.25`  | Animation smoothing for pan and zoom changes.   |
 | `confine`       | `boolean` | `false` | Confines pan and zoom within the viewer bounds. |
 
+## Compatibility
+
 These components utilise Svelte's [Attachments](https://svelte.dev/docs/svelte/@attach), which were introduced in Svelte 5.29.
 
 If you're using an older version of Svelte (prior to 5.29), import from `svelte-image-viewer/legacy` to access the legacy versions that rely on [Actions](https://svelte.dev/docs/svelte/use).
