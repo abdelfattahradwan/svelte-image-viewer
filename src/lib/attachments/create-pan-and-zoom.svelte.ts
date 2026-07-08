@@ -1,4 +1,5 @@
 import type { Attachment } from "svelte/attachments";
+import { untrack } from "svelte";
 
 interface PanAndZoomParams {
   get offsetX(): number;
@@ -10,6 +11,7 @@ interface PanAndZoomParams {
   minScale?: number;
   maxScale?: number;
   scaleSmoothing?: number;
+  confine?: boolean;
 }
 
 export function createPanAndZoom(
@@ -29,6 +31,102 @@ export function createPanAndZoom(
 
     let centreX = 0;
     let centreY = 0;
+
+    function getConfinement() {
+      if (params.confine !== true) {
+        return undefined;
+      }
+
+      const content =
+        element.firstElementChild instanceof HTMLElement
+          ? element.firstElementChild
+          : undefined;
+
+      if (content === undefined) {
+        return undefined;
+      }
+
+      const rect = element.getBoundingClientRect();
+      const contentWidth = content.offsetWidth;
+      const contentHeight = content.offsetHeight;
+
+      if (
+        rect.width === 0 ||
+        rect.height === 0 ||
+        contentWidth === 0 ||
+        contentHeight === 0
+      ) {
+        return undefined;
+      }
+
+      const fitScale = Math.min(
+        rect.width / contentWidth,
+        rect.height / contentHeight,
+      );
+
+      if (!Number.isFinite(fitScale) || fitScale <= 0) {
+        return undefined;
+      }
+
+      return {
+        containerWidth: rect.width,
+        containerHeight: rect.height,
+        contentWidth,
+        contentHeight,
+        fitScale,
+      };
+    }
+
+    function confineScale(scale: number): number {
+      const minScale = params.minScale ?? 0.25;
+      const maxScale = params.maxScale ?? 2.0;
+      const confinement = getConfinement();
+
+      if (confinement === undefined) {
+        return clamp(scale, minScale, maxScale);
+      }
+
+      const confinedMaxScale = Math.min(maxScale, confinement.fitScale);
+      const confinedMinScale = Math.min(minScale, confinedMaxScale);
+
+      return clamp(scale, confinedMinScale, confinedMaxScale);
+    }
+
+    function confineOffsets(
+      offsetX: number,
+      offsetY: number,
+      scale: number,
+    ): [number, number] {
+      const confinement = getConfinement();
+
+      if (confinement === undefined) {
+        return [offsetX, offsetY];
+      }
+
+      const scaledWidth = confinement.contentWidth * scale;
+      const scaledHeight = confinement.contentHeight * scale;
+      const maxX = Math.abs(scaledWidth - confinement.containerWidth) * 0.5;
+      const maxY = Math.abs(scaledHeight - confinement.containerHeight) * 0.5;
+
+      return [clamp(offsetX, -maxX, maxX), clamp(offsetY, -maxY, maxY)];
+    }
+
+    function confineCurrentOffsets() {
+      const confinedScale = confineScale(params.scale);
+      const [confinedX, confinedY] = confineOffsets(
+        params.offsetX,
+        params.offsetY,
+        confinedScale,
+      );
+
+      params.offsetX = confinedX;
+      params.offsetY = confinedY;
+      params.scale = confinedScale;
+    }
+
+    function confineCurrentOffsetsWithoutTracking() {
+      untrack(confineCurrentOffsets);
+    }
 
     function handlePointerDown(event: PointerEvent) {
       event.preventDefault();
@@ -96,9 +194,16 @@ export function createPanAndZoom(
 
         const newX = currentOffsetX + dx;
         const newY = currentOffsetY + dy;
+        const [confinedX, confinedY] = confineOffsets(newX, newY, params.scale);
 
-        params.offsetX = newX;
-        params.offsetY = newY;
+        params.offsetX = confinedX;
+        params.offsetY = confinedY;
+
+        currentOffsetX = confinedX;
+        currentOffsetY = confinedY;
+
+        initialMidpointX = pointer.clientX;
+        initialMidpointY = pointer.clientY;
       } else if (pointers.size === 2) {
         const [p1, p2] = Array.from(pointers.values());
 
@@ -109,13 +214,13 @@ export function createPanAndZoom(
           p2.clientY,
         );
 
+        if (initialDistance === 0) {
+          return;
+        }
+
         const scaleChange = currentDistance / initialDistance;
 
-        const newScale = clamp(
-          initialScale * scaleChange,
-          params.minScale ?? 0.25,
-          params.maxScale ?? 2.0,
-        );
+        const newScale = confineScale(initialScale * scaleChange);
 
         const [currentMidpointX, currentMidpointY] = midpoint(
           p1.clientX,
@@ -132,8 +237,14 @@ export function createPanAndZoom(
         const newOffsetY =
           currentMidpointY - rect.top - rect.height * 0.5 - newScale * centreY;
 
-        params.offsetX = newOffsetX;
-        params.offsetY = newOffsetY;
+        const [confinedX, confinedY] = confineOffsets(
+          newOffsetX,
+          newOffsetY,
+          newScale,
+        );
+
+        params.offsetX = confinedX;
+        params.offsetY = confinedY;
 
         params.scale = newScale;
       }
@@ -142,7 +253,10 @@ export function createPanAndZoom(
     function handlePointerUp(event: PointerEvent) {
       event.preventDefault();
       pointers.delete(event.pointerId);
-      element.releasePointerCapture(event.pointerId);
+
+      if (element.hasPointerCapture(event.pointerId)) {
+        element.releasePointerCapture(event.pointerId);
+      }
 
       if (pointers.size === 1) {
         const pointer = Array.from(pointers.values()).at(0);
@@ -166,11 +280,11 @@ export function createPanAndZoom(
       const scaleChange = 1 + delta / (params.scaleSmoothing ?? 500);
       const currentScale = params.scale;
 
-      const newScale = clamp(
-        currentScale * scaleChange,
-        params.minScale ?? 0.25,
-        params.maxScale ?? 2.0,
-      );
+      if (currentScale === 0) {
+        return;
+      }
+
+      const newScale = confineScale(currentScale * scaleChange);
 
       const adjustedScale = newScale / currentScale;
 
@@ -181,11 +295,32 @@ export function createPanAndZoom(
 
       const newX = newOffsetX - adjustedScale * (newOffsetX - params.offsetX);
       const newY = newOffsetY - adjustedScale * (newOffsetY - params.offsetY);
+      const [confinedX, confinedY] = confineOffsets(newX, newY, newScale);
 
-      params.offsetX = newX;
-      params.offsetY = newY;
+      params.offsetX = confinedX;
+      params.offsetY = confinedY;
 
       params.scale = newScale;
+    }
+
+    const resizeObserver =
+      params.confine === true
+        ? new ResizeObserver(confineCurrentOffsetsWithoutTracking)
+        : undefined;
+
+    if (resizeObserver !== undefined) {
+      resizeObserver.observe(element);
+
+      const content =
+        element.firstElementChild instanceof HTMLElement
+          ? element.firstElementChild
+          : undefined;
+
+      if (content !== undefined) {
+        resizeObserver.observe(content);
+      }
+
+      confineCurrentOffsetsWithoutTracking();
     }
 
     element.addEventListener("pointerdown", handlePointerDown);
@@ -204,6 +339,7 @@ export function createPanAndZoom(
       element.removeEventListener("pointerleave", handlePointerUp);
       element.removeEventListener("pointerout", handlePointerUp);
       element.removeEventListener("wheel", handleWheel);
+      resizeObserver?.disconnect();
     };
   };
 }
