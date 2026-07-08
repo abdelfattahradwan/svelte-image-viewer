@@ -7,6 +7,7 @@ A couple of simple components for displaying content with pan and zoom capabilit
 - Pan and zoom capabilities
 - Works with any HTML element
 - Supports mouse and touchscreen interactions
+- Optional confinement to keep content within the viewer
 
 ## Demo
 
@@ -60,6 +61,20 @@ The `ImageViewer` component is a simple image viewer that displays an image with
 </div>
 ```
 
+#### Props
+
+| Prop            | Type      | Default     | Description                                     |
+| --------------- | --------- | ----------- | ----------------------------------------------- |
+| `src`           | `string`  | Required    | Image source URL.                               |
+| `alt`           | `string`  | `undefined` | Image alternative text.                         |
+| `targetOffsetX` | `number`  | `0`         | Horizontal pan target, in pixels.               |
+| `targetOffsetY` | `number`  | `0`         | Vertical pan target, in pixels.                 |
+| `targetScale`   | `number`  | `1`         | Zoom target.                                    |
+| `minScale`      | `number`  | `0.5`       | Minimum zoom scale.                             |
+| `maxScale`      | `number`  | `3`         | Maximum zoom scale.                             |
+| `smoothing`     | `number`  | `0.25`      | Animation smoothing for pan and zoom changes.   |
+| `confine`       | `boolean` | `false`     | Confines pan and zoom within the viewer bounds. |
+
 ### `Viewer` component
 
 The `Viewer` component displays its children inside a container with pan and zoom capabilities.
@@ -77,6 +92,18 @@ The `Viewer` component displays its children inside a container with pan and zoo
   </Viewer>
 </div>
 ```
+
+#### Props
+
+| Prop            | Type      | Default | Description                                     |
+| --------------- | --------- | ------- | ----------------------------------------------- |
+| `targetOffsetX` | `number`  | `0`     | Horizontal pan target, in pixels.               |
+| `targetOffsetY` | `number`  | `0`     | Vertical pan target, in pixels.                 |
+| `targetScale`   | `number`  | `1`     | Zoom target.                                    |
+| `minScale`      | `number`  | `0.5`   | Minimum zoom scale.                             |
+| `maxScale`      | `number`  | `3`     | Maximum zoom scale.                             |
+| `smoothing`     | `number`  | `0.25`  | Animation smoothing for pan and zoom changes.   |
+| `confine`       | `boolean` | `false` | Confines pan and zoom within the viewer bounds. |
 
 These components utilise Svelte's [Attachments](https://svelte.dev/docs/svelte/@attach), which were introduced in Svelte 5.29.
 
